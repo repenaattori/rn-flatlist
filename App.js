@@ -1,23 +1,53 @@
 
-import { Image, ScrollView, StyleSheet, Text, View, StatusBar, FlatList} from 'react-native';
+import { useEffect, useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, View, StatusBar, FlatList, TextInput} from 'react-native';
 import {DATA} from './Data';
 
 
 export default function App() {
 
+  const [data, setData] = useState();
+
+  const searchData = (text) =>{
+    const seachArray = DATA.filter(p=> p.lname.startsWith(text))
+    setData(seachArray);
+  }
+
+  useEffect(()=>{
+    setData(DATA);
+  },[]);
 
   return (
-    <ScrollView style={styles.container}>
-      <View>
-        <FlatList
-          data={DATA}
-          renderItem={({item}) => <Item person={item} ></Item>}
-        />
+   
+      <View style={styles.container}>
+          <Search search={searchData}/>
+          <FlatList
+            data={data}
+            renderItem={({item}) => <Item person={item} ></Item>}
+          />
       </View>
-    </ScrollView>
+    
   );
 }
 
+
+const Search = ({search})=>{
+
+  const [text, setText] = useState('');
+
+  return(
+    <View>
+      <TextInput 
+        style={styles.search}
+        placeholder='Search...'
+        returnKeyType='search'
+        onSubmitEditing={()=>search(text)}
+        value={text}
+        onChangeText={t => setText(t)}
+      />
+    </View>
+  );
+}
 
 const Item = ({person}) => {
   return(
@@ -27,8 +57,6 @@ const Item = ({person}) => {
     </View>
   )
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -49,5 +77,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     padding: 10
+  },
+  search:{
+    fontSize: 40,
+    backgroundColor: 'beige'
   }
 });
