@@ -11,7 +11,7 @@ export default function App() {
       <View>
         <FlatList
           data={DATA}
-          renderItem={({item}) => <Text>{item.fname}</Text>}
+          renderItem={({item}) => <Item person={item} ></Item>}
         />
       </View>
     </ScrollView>
@@ -21,8 +21,9 @@ export default function App() {
 
 const Item = ({person}) => {
   return(
-    <View>
-      
+    <View style={styles.card}>
+      <Text style={styles.text}>{person.lname} {person.fname}</Text>
+      <Image style={styles.image} source={{uri: person.img}}/>
     </View>
   )
 }
@@ -37,6 +38,16 @@ const styles = StyleSheet.create({
   },
   text:{
     padding: 10,
-    fontSize: 40
+    fontSize: 20,
+  },
+  image:{
+    width: 100,
+    height: 150
+  },
+  card:{
+    margin: 10,
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 10
   }
 });
